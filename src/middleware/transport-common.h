@@ -123,7 +123,7 @@ namespace std
         struct hash<goby::Group>
     {
         size_t operator()(const goby::Group& group) const noexcept
-        { return std::hash<std::string>{}(std::string(group)); }
+        { return group.hash(); }
     };
 }
  

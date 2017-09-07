@@ -187,10 +187,15 @@ namespace goby
         class DataQueue
         {
         private:
-            std::map<Group, std::vector<std::shared_ptr<const Data>>> data_;
+            std::unordered_map<Group, std::vector<std::shared_ptr<const Data>>> data_;
         public:
             void insert(const Group& g, std::shared_ptr<const Data> datum)
-            { data_[g].push_back(datum); }
+            {
+                auto it = data_.find(g);
+                if(it == data_.end())
+                    it = data_.insert(std::make_pair(g, std::vector<std::shared_ptr<const Data>>())).first;
+                it->second.push_back(datum);
+            }
             void clear()
             { data_.clear(); }
             bool empty()
